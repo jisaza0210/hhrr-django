@@ -1,0 +1,16 @@
+{% load filters %}
+
+{% for message in messages %}
+<div
+  class="alert alert-{{ message.level|alert_class }} alert-dismissible fade show mt-3 mx-auto alert-custom w-75"
+  role="alert"
+>
+  {{ message }}
+  <button
+    aria-label="Close"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    type="button"
+  ></button>
+</div>
+{% endfor %}
