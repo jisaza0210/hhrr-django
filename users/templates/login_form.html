@@ -1,0 +1,28 @@
+<form method="POST" action="{% url 'home' %}">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="emailInput" class="form-label">Correo electrónico</label>
+    <input
+      class="form-control"
+      id="emailInput"
+      name="email"
+      required
+      type="email"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="passwordInput" class="form-label">Contraseña</label>
+    <input
+      class="form-control"
+      id="passwordInput"
+      name="password"
+      required
+      type="password"
+    />
+  </div>
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary p-2 text-uppercase">
+      Iniciar sesión
+    </button>
+  </div>
+</form>
