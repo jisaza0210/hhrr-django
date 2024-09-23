@@ -1,13 +1,13 @@
 <form method="POST" action="{% url 'home' %}">
   {% csrf_token %}
   <div class="mb-3">
-    <label for="emailInput" class="form-label">Correo electrónico</label>
+    <label for="usernameInput" class="form-label">Nombre de usuario</label>
     <input
       class="form-control"
-      id="emailInput"
-      name="email"
+      id="usernameInput"
+      name="username"
       required
-      type="email"
+      type="text"
     />
   </div>
   <div class="mb-3">
