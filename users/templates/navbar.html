@@ -21,6 +21,11 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'vacations' %}"
+            >Vacaciones</a
+          >
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}"
             >Cerrar sesión</a
           >
