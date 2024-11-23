@@ -12,6 +12,11 @@
     >
     {% endfor %}
   </div>
+
+  {% if available_days %}
+  <h1>Tienes {{available_days}} días de vacaciones disponibles</h1>
+  {% endif %}
+
   {% else %}
   <div class="col-md-6 offset-md-3">{% include 'login_form.html' %}</div>
   {% endif %}
