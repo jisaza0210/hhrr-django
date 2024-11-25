@@ -37,3 +37,13 @@ class VacationRequestForm(forms.ModelForm):
                 )
 
         return cleaned_data
+
+
+class VacationRequestUpdateForm(forms.ModelForm):
+    class Meta:
+        model = VacationRequest
+        fields = ["status", "message"]
+        widgets = {
+            "status": forms.Select(attrs={"class": "form-select"}),
+            "message": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        }
