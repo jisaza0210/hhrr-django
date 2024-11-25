@@ -6,17 +6,30 @@ from django.db import models
 
 class VacationRequest(models.Model):
     STATUS_CHOICES = [
-        ("PENDING", "Pending"),
-        ("APPROVED", "Approved"),
-        ("REJECTED", "Rejected"),
+        ("PENDING", "Pendiente"),
+        ("APPROVED", "Aprobada"),
+        ("REJECTED", "Rechazada"),
     ]
 
+    comment = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     end_date = models.DateField()
     message = models.TextField(blank=True, null=True)
     start_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
+    backup_person = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="backup_person",
+        help_text="La persona que va a quedar a cargo de tus funciones mientras estás de vacaciones",
+    )
+    compensatory_days = models.IntegerField(
+        default=0,
+        help_text="De los días solicitados, cuántos son compensatorios",
+    )
 
     def __str__(self):
         return f"{self.employee.first_name}'s vacation ({self.start_date} to {self.end_date})"
@@ -68,7 +81,10 @@ class Employee(models.Model):
                     total_days += 1
                 current_date += timedelta(days=1)
 
+            total_days -= request.compensatory_days
+
         return total_days
+
 
     def __str__(self):
         return self.user.username
