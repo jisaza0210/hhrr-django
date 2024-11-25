@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if requests %}
+    <h1>Tienes solicitudes!</h1>
+    <div class="responsive-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Fecha inicio</th>
+            <th scope="col">Fecha fin</th>
+            <th scope="col">Fecha de creación</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for request in requests %}
+            <tr>
+              <th scope="row">{{ request.id }}</th>
+              <td>{{ request.start_date }}</td>
+              <td>{{ request.end_date }}</td>
+              <td>{{ request.created_at }}</td>
+              <td>
+                {% if request.status == "PENDING" %}
+                  <span class="badge bg-warning text-dark">Pendiente</span>
+                {% elif request.status == "APPROVED" %}
+                  <span class="badge bg-success">Aprobada</span>
+                {% elif request.status == "REJECTED" %}
+                  <span class="badge bg-danger">Rechazada</span>
+                {% else %}
+                  <span class="badge bg-secondary">Desconocido</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <h1>No tienes solicitudes de vacaciones!</h1>
+  {% endif %}
+{% endblock %}
