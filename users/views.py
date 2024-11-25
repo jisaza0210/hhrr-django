@@ -67,7 +67,7 @@ def user_vacation_requests(request):
     context = {}
     employee = Employee.objects.get(user_id=request.user.id)
     try:
-        requests = VacationRequest.objects.filter(id=employee.id)
+        requests = VacationRequest.objects.filter(employee_id=employee.id)
         context["requests"] = requests
     except ObjectDoesNotExist:
         context["requests"] = None
