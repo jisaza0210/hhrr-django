@@ -2,8 +2,7 @@
 
 {% block content %}
   {% if requests %}
-    <h1>Tienes solicitudes!</h1>
-    <div class="responsive-table">
+    <div class="responsive-table mt-3">
       <table class="table">
         <thead>
           <tr>
@@ -12,6 +11,7 @@
             <th scope="col">Fecha fin</th>
             <th scope="col">Fecha de creación</th>
             <th scope="col">Estado</th>
+            <th scope="col">Mensaje</th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +32,7 @@
                   <span class="badge bg-secondary">Desconocido</span>
                 {% endif %}
               </td>
+              <td>{{request.message}}</td>
             </tr>
           {% endfor %}
         </tbody>

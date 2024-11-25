@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Actualizar solicitud</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.status.label_tag }}
+      {{ form.status }}
+    </div>
+    <div class="mb-3">
+      {{ form.message.label_tag }}
+      {{ form.message }}
+    </div>
+    <button type="submit" class="btn btn-success">Guardar cambios</button>
+    <a href="{% url 'team_vacation_requests' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}

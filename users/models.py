@@ -11,11 +11,12 @@ class VacationRequest(models.Model):
         ("REJECTED", "Rejected"),
     ]
 
-    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
     created_at = models.DateTimeField(auto_now_add=True)
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    end_date = models.DateField()
+    message = models.TextField(blank=True, null=True)
+    start_date = models.DateField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
 
     def __str__(self):
         return f"{self.employee.first_name}'s vacation ({self.start_date} to {self.end_date})"
@@ -75,6 +76,7 @@ class Employee(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    approvers = models.ManyToManyField(User, related_name="approver_teams")
 
     def __str__(self):
         return self.name
