@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def home_page(request):
@@ -46,6 +47,9 @@ def logout_user(request):
 
 
 def request_vacation(request):
+    if not request.user.is_authenticated:
+        return redirect("home")
+
     if request.method == "POST":
         form = VacationRequestForm(request.POST, employee=request.user.employee)
         if form.is_valid():
@@ -57,3 +61,18 @@ def request_vacation(request):
         form = VacationRequestForm(employee=request.user.employee)
 
     return render(request, "vacation_request.html", {"form": form})
+
+
+def user_vacation_requests(request):
+    if not request.user.is_authenticated:
+        return redirect("home")
+
+    context = {}
+    employee = Employee.objects.get(user_id=request.user.id)
+    try:
+        requests = VacationRequest.objects.filter(id=employee.id)
+        context["requests"] = requests
+    except ObjectDoesNotExist:
+        context["requests"] = None
+
+    return render(request, "user_vacation_requests.html", context)
