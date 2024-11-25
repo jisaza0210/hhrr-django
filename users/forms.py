@@ -7,7 +7,6 @@ class VacationRequestForm(forms.ModelForm):
     backup_person = forms.ModelChoiceField(
         queryset=User.objects.none(),  # Initial queryset is empty
         required=False,  # Allow null values
-        widget=forms.Select(attrs={"class": "form-select"}),  # Optional styling
     )
 
     class Meta:
@@ -22,6 +21,11 @@ class VacationRequestForm(forms.ModelForm):
         widgets = {
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
+            "backup_person": forms.Select(
+                attrs={
+                    "class": "w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10",
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -48,21 +52,6 @@ class VacationRequestForm(forms.ModelForm):
             if obj.first_name and obj.last_name
             else obj.username
         )
-
-    def clean_backup_person(self):
-        backup_person = self.cleaned_data.get("backup_person")
-        if backup_person:
-            user = self.instance.employee
-            if user:
-                employee = Employee.objects.get(user=user)
-                team_members = Employee.objects.filter(team=employee.team).exclude(
-                    user=user
-                )
-                if backup_person not in team_members.values_list("user", flat=True):
-                    raise forms.ValidationError(
-                        "The selected backup person must belong to your team."
-                    )
-        return backup_person
 
     def clean(self):
         cleaned_data = super().clean()

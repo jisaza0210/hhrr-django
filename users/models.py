@@ -2,6 +2,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+import datetime
 
 
 class VacationRequest(models.Model):
@@ -36,17 +37,21 @@ class VacationRequest(models.Model):
 
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    team = models.ForeignKey("Team", on_delete=models.SET_NULL, null=True)
-    vacation_days_taken = models.IntegerField(default=0)  # Days already taken
+    birthdate = models.DateField(default=datetime.date.today)
+    role = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateField(default=date.today)  # Employee's start date
+    team = models.ForeignKey("Team", on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    vacation_days_taken = models.IntegerField(default=0)  # Days already taken
+
+    def get_total_vacation_days(self):
+        today = date.today()
+        years_worked = today.year - self.start_date.year
+        return 15 * years_worked
 
     def calculate_available_vacation_days(self):
         today = date.today()
-
-        # Calculate total vacation days accrued since the start date
-        years_worked = today.year - self.start_date.year
-        total_vacation_days = 15 * years_worked
+        total_vacation_days = self.get_total_vacation_days()
 
         # Prorated days for the first year
         if today.year == self.start_date.year:
@@ -84,7 +89,6 @@ class Employee(models.Model):
             total_days -= request.compensatory_days
 
         return total_days
-
 
     def __str__(self):
         return self.user.username
