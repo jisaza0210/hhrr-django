@@ -50,14 +50,16 @@ def logout_user(request):
 @login_required
 def request_vacation(request):
     if request.method == "POST":
-        form = VacationRequestForm(request.POST, employee=request.user.employee)
+        form = VacationRequestForm(
+            request.POST, employee=request.user.employee, user=request.user
+        )
         if form.is_valid():
             vacation_request = form.save(commit=False)
             vacation_request.employee = request.user  # Associate the logged-in user
             vacation_request.save()
             return redirect("vacations")  # Redirect to some page after saving
     else:
-        form = VacationRequestForm(employee=request.user.employee)
+        form = VacationRequestForm(employee=request.user.employee, user=request.user)
 
     return render(request, "vacation_request.html", {"form": form})
 
@@ -115,5 +117,8 @@ def update_vacation_request(request, request_id):
     return render(
         request,
         "update_vacation_request.html",
-        {"form": form, "request_obj": vacation_request},
+        {
+            "form": form,
+            "request_obj": vacation_request,  # Pass the vacation request to the template
+        },
     )

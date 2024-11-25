@@ -1,12 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Solicitar vacaciones</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
-</div>
+<form method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="start_date">Fecha inicio</label>
+    {{ form.start_date }}
+  </div>
+  <div class="form-group">
+    <label for="end_date">Fecha fin</label>
+    {{ form.end_date }}
+  </div>
+  <div class="form-group">
+    <label for="backup_person">Persona que queda a cargo</label>
+    {{ form.backup_person }}
+  </div>
+  <div class="form-group">
+    <label for="compensatory_days">Días compensatorios</label>
+    {{ form.compensatory_days }}
+  </div>
+  <div class="form-group">
+      <label for="comment">Comentarios</label>
+      {{ form.comment }}
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 {% endblock %}
