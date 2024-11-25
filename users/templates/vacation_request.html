@@ -1,28 +1,41 @@
 {% extends 'base.html' %}
+{% load form_filters %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  <div class="form-group">
-    <label for="start_date">Fecha inicio</label>
-    {{ form.start_date }}
-  </div>
-  <div class="form-group">
-    <label for="end_date">Fecha fin</label>
-    {{ form.end_date }}
-  </div>
-  <div class="form-group">
-    <label for="backup_person">Persona que queda a cargo</label>
-    {{ form.backup_person }}
-  </div>
-  <div class="form-group">
-    <label for="compensatory_days">Días compensatorios</label>
-    {{ form.compensatory_days }}
-  </div>
-  <div class="form-group">
-      <label for="comment">Comentarios</label>
-      {{ form.comment }}
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-md mb-8">
+  <h1 class="text-2xl font-bold mb-6 text-gray-800">Solicitud de Vacaciones</h1>
+
+  <form method="post" class="space-y-6">
+    {% csrf_token %}
+
+    <div class="flex flex-col">
+      <label for="start_date" class="mb-2 text-gray-700 font-medium">Fecha inicio</label>
+      {{ form.start_date|add_class:"block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400" }}
+    </div>
+
+    <div class="flex flex-col">
+      <label for="end_date" class="mb-2 text-gray-700 font-medium">Fecha fin</label>
+      {{ form.end_date|add_class:"block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400" }}
+    </div>
+
+    <div class="flex flex-col relative">
+      <label for="backup_person" class="mb-2 text-gray-700 font-medium">Persona que queda a cargo</label>
+      {{ form.backup_person|add_class:"block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 pr-10 appearance-none" }}
+    </div>
+
+    <div class="flex flex-col">
+      <label for="compensatory_days" class="mb-2 text-gray-700 font-medium">Días compensatorios</label>
+      {{ form.compensatory_days|add_class:"block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400" }}
+    </div>
+
+    <div class="flex flex-col">
+      <label for="comment" class="mb-2 text-gray-700 font-medium">Comentarios</label>
+      {{ form.comment|add_class:"block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400" }}
+    </div>
+
+    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      Enviar
+    </button>
+  </form>
+</div>
 {% endblock %}

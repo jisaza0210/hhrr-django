@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render, get_object_or_404
+from django.utils import timezone
 
 
 def home_page(request):
@@ -25,12 +26,33 @@ def home_page(request):
         )
         return redirect("home")
 
+    employees_out_of_office = None
+    birthdays_this_month = None
+    progress_percentage = 0
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
         employee = Employee.objects.get(id=user.id)
+        total_days = employee.get_total_vacation_days()
         available_days = employee.calculate_available_vacation_days()
         user_team = user.employee.team
         employees_in_team = Employee.objects.filter(team=user_team).exclude(user=user)
+
+        # Get today's date
+        today = timezone.now().date()
+
+        # Fetch employees currently on approved vacation
+        employees_out_of_office = Employee.objects.filter(
+            user__vacationrequest__status="APPROVED",
+            user__vacationrequest__start_date__lte=today,
+            user__vacationrequest__end_date__gte=today,
+        ).distinct()
+
+        # Get employees with birthdays in the current month
+        current_month = timezone.now().month
+        birthdays_this_month = Employee.objects.filter(birthdate__month=current_month)
+        progress_percentage = (
+            (available_days / total_days) * 100 if total_days > 0 else 0
+        )
     else:
         employees_in_team = None
         available_days = None
@@ -38,6 +60,9 @@ def home_page(request):
     context = {}
     context["employees_in_team"] = employees_in_team
     context["available_days"] = available_days
+    context["employees_out_of_office"] = employees_out_of_office
+    context["birthdays_this_month"] = birthdays_this_month
+    context["progress_percentage"] = progress_percentage
     return render(request, "home_page.html", context)
 
 
@@ -57,7 +82,7 @@ def request_vacation(request):
             vacation_request = form.save(commit=False)
             vacation_request.employee = request.user  # Associate the logged-in user
             vacation_request.save()
-            return redirect("vacations")  # Redirect to some page after saving
+            return redirect("home")  # Redirect to some page after saving
     else:
         form = VacationRequestForm(employee=request.user.employee, user=request.user)
 
