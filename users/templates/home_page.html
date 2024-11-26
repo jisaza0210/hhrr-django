@@ -3,12 +3,12 @@
 {% block content %}
 <div class="container mx-auto p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4">
   {% if user.is_authenticated %}
-  <div class="rounded border border-gray-200 p-4 flex flex-col gap-y-3">
-    <h1 class="font-bold text-xl font-['Niramit']">Tu Equipo</h1>
+  <div class="rounded-lg border flex flex-col border-2 border-[#E8F8F5] shadow-lg">
+    <h1 class="m-0 font-bold text-xl font-['Niramit'] bg-[#E8F8F5] px-4 py-5 text-[#00A896]">Tu Equipo</h1>
     {% for employee in employees_in_team %}
-    <div class="flex items-center gap-x-3">
+    <div class="flex items-center space-x-3 hover:bg-gray-50 p-3">
       <span
-        class="rounded-full w-10 h-10 bg-indigo-300 flex items-center justify-center"
+        class="rounded-full w-10 h-10 bg-[#00A896] text-white flex items-center justify-center"
         >{{employee.user.first_name|slice:":1"}}{{employee.user.last_name|slice:":1"}}</span
       >
       <div>
@@ -19,26 +19,29 @@
     {% endfor %}
   </div>
 
-  <div class="rounded border border-gray-200 p-4 flex flex-col gap-y-3">
-    <h1 class="font-bold text-xl font-['Niramit'] mb-3">Fuera de la oficina</h1>
+  <div class="rounded-lg border flex flex-col gap-y-3 border-2 border-[#E8F8F5] pb-8 shadow-lg">
+    <h1 class="font-bold text-xl font-['Niramit'] bg-[#E8F8F5] p-4 text-[#00A896]">Fuera de la Oficina</h1>
     {% if employees_out_of_office %}
       {% for employee in employees_out_of_office %}
-        <div class="flex items-center justify-between">
-          <p>{{employee.user.first_name}} {{employee.user.last_name}}</p>
-          <span class="rounded-md bg-gray-200 text-center text-sm color-white px-3 py-1">Vacaciones</span>
+        <div class="p-4 mx-3 my-1 rounded-md border border-1 border-gray-100 flex items-center justify-between">
+          <p class="font-semibold">{{employee.user.first_name}} {{employee.user.last_name}}</p>
+          <span class="rounded-full bg-[#00A896] text-center text-sm text-white px-3 py-1">Vacaciones</span>
         </div>
       {% endfor %}
     {% else %}
-      <h2>Ninguno</h2>
+      <h2 class="p-4">Ninguno</h2>
     {% endif %}
   </div>
 
   
-  <div class="rounded border border-gray-200 p-4 flex flex-col gap-y-3">
-    <h1 class="font-bold text-xl font-['Niramit'] mb-3">Próximos Cumpleaños</h1>
+  <div class="rounded-lg border flex flex-col gap-y-3 border-2 border-[#E8F8F5] pb-8 shadow-lg">
+    <h1 class="font-bold text-xl font-['Niramit'] bg-[#E8F8F5] p-4 text-[#00A896]">Próximos Cumpleaños</h1>
     {% if birthdays_this_month %}
       {% for birthday in birthdays_this_month %}
-      <h1><i class="fa-regular fa-calendar mr-2"></i>{{birthday.user.first_name}} {{birthday.user.last_name}} - {{birthday.birthdate|date:"d/m/Y"}}</h1>
+      <div class="p-4 mx-3 my-1 rounded-md border border-1 border-gray-100 flex items-center justify-between">
+        <p class="font-semibold">{{birthday.user.first_name}} {{birthday.user.last_name}}</p>
+        <p>{{birthday.birthdate|date:"d/m/Y"}}</p>
+      </div>
       {% endfor %}
     {% else %}
     <h1>Nokas</h1>
@@ -46,9 +49,9 @@
   </div>
 
   {% if available_days %}
-  <div class="rounded border border-gray-200 p-4 flex flex-col gap-y-3">
-    <h1 class="font-bold text-xl font-['Niramit'] mb-3">Días de Vacaciones Disponibles</h1>
-    <p>Tienes {{available_days}} días disponibles de vacaciones</p>
+  <div class="rounded-lg border flex flex-col gap-y-3 border-2 border-[#E8F8F5] shadow-lg">
+    <h1 class="font-bold text-xl font-['Niramit'] bg-[#E8F8F5] p-4 text-[#00A896]">Días de Vacaciones</h1>
+    <p class="p-4">Tienes {{available_days}} días disponibles de vacaciones</p>
   </div>
   {% endif %} 
 

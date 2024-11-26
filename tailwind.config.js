@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ['MrEaves', 'sans-serif'],
+      serif: ['Niramit', 'serif']
+    }
   },
   plugins: [],
 }
